@@ -20,6 +20,7 @@ site/
 venv/
 venv3/
 .venv/
+env/
 .env/
 .cache/
 build/
