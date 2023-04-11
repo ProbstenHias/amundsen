@@ -16,6 +16,8 @@ site/
 *.pyt
 *.pytc
 *.egg-info
+*.egg
+*.eggs
 .*.swp
 venv/
 venv3/
