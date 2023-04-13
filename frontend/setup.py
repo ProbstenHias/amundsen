@@ -79,6 +79,10 @@ setup(
     entry_points="""
         [action_log.post_exec.plugin]
         logging_action_log=amundsen_application.log.action_log_callback:logging_action_log
+        
+        [preview_client]
+        table_preview_client_class = amundsen_application.base.examples.example_superset_preview_client:SupersetPreviewClient
+
     """,
     classifiers=[
         'Programming Language :: Python :: 3.7',
