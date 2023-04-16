@@ -101,6 +101,7 @@ import { AIRFLOW, DATABRICKS } from './ApplicationDropdown/constants';
 import { STATUS_CODES } from '../../constants';
 
 import './styles.scss';
+import DataByingButton from './DataByingButton';
 
 const DASHBOARDS_PER_PAGE = 10;
 const TABLE_SOURCE = 'table_page';
@@ -743,6 +744,7 @@ export class TableDetail extends React.Component<
             <div className="header-section header-buttons">
               <LineageButton tableData={data} />
               <TableReportsDropdown resourceReports={data.resource_reports} />
+              <DataByingButton tableData={data} />
               <DataPreviewButton modalTitle={this.getDisplayName()} />
               <ExploreButton tableData={data} />
             </div>
