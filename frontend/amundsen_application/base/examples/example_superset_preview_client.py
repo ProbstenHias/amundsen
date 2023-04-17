@@ -32,6 +32,12 @@ class SupersetPreviewClient(BaseSupersetPreviewClient):
         self.database_map = database_map
         self.headers = {}
         self.url = None
+        self.do_authentication("admin", "admin")
+        self.session = requests.Session()
+        self.session.headers.update(self.headers)
+        csrf_token = self.get_csrf_token(self.session)
+        self.headers["X-CSRFToken"] = csrf_token
+        self.session.headers.update(self.headers)
 
     def do_authentication(self, username: str, password: str) -> None:
         """
@@ -82,18 +88,9 @@ class SupersetPreviewClient(BaseSupersetPreviewClient):
         database_name = params.get("cluster")
         schema = params.get("schema")
         table_name = params.get("tableName")
-        # print all the params
-        for key, value in params.items():
-            logging.info("Key: " + key + " Value: " + value)
         try:
-            self.do_authentication("admin", "admin")
-            session = requests.Session()
-            session.headers.update(self.headers)
-            csrf_token = self.get_csrf_token(session)
-            self.headers["X-CSRFToken"] = csrf_token
-            session.headers.update(self.headers)
 
-            database_response = session.get(database_endpoint, headers=headers)
+            database_response = self.session.get(database_endpoint, headers=self.headers)
             databases = database_response.json()["result"]
             database_id = None
             for db in databases:
@@ -116,4 +113,4 @@ class SupersetPreviewClient(BaseSupersetPreviewClient):
             logging.error("Encountered error generating request data: " + str(e))
 
         # Post request to Superset's `sql_json` endpoint
-        return session.post(execute_endpoint, headers=headers, json=execute_payload)
+        return self.session.post(execute_endpoint, headers=self.headers, json=execute_payload)
